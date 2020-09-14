@@ -26,6 +26,7 @@ namespace ConsoleApp
 
         //private data member
         private string _Manufacturer;
+        private decimal _Height;
         
         //Properties
         //optional
@@ -83,11 +84,49 @@ namespace ConsoleApp
                 //alternate way of coding set
                 //ternary operator
                 //syntax:    condition(s) ? true value : false value
-                _Manufacturer = string.IsNullOrEmpty(value) ? null : value;
+                //_Manufacturer = string.IsNullOrEmpty(value) ? null : value;
 
             }
         }
 
+        //Auto Implemeted Properties
+        //auto implemented properties can be used when there is NO NEED
+        //  for additional processing against the incoming data
+        //NO internal private data member is required for this property
+        //the system will intenally generate a data area for the data
+        //accessing this stored data (getting or setting) CAN ONLY be done
+        //   via the property
+
+        public decimal Width { get; set; }
+
+        //one can still code an auto implement property as a
+        //  fully implemented property
+        //private decimal _Width;
+        //public decimal Width
+        //{
+        //    get { return _Width; }
+        //    set { _Width = value; }
+        //}
+        
+        //what if, the data coming in is invalid?
+        //Will there be additional logic/code need? YES
+        //What property implementation is needed? 
+        public decimal Height
+        {
+            get { return _Height; }
+            set
+            {
+                //the m on the literal indicates the value is a decimal
+                if (value <= 0.0m)
+                {
+                    throw new Exception("Height can not be 0 or less than 0");
+                }
+                else
+                {
+                    _Height = value;
+                }
+            }
+        }
         //Constructors
 
         //Behaviours (methods)
