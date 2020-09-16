@@ -21,6 +21,8 @@ namespace ConsoleApp
             //Greedy constructor
             Window myGreedyInstance = new Window(2.75m, 1.9m, 3, "See thru Holes");
 
+            decimal price = myGreedyInstance.WindowCost(5.76m);
+            decimal area = myDefaultInstance.WindowArea();
         }
     }
 }
