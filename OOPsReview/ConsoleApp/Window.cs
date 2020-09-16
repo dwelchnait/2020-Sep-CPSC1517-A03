@@ -61,7 +61,7 @@ namespace ConsoleApp
                 //  data member
                 return _Manufacturer;
             }
-            private set
+            set
             {
                 //stores data via the property from the outside user of that property
                 // left side of an asignment statement
@@ -139,6 +139,73 @@ namespace ConsoleApp
         public int? NumberofPanes { get; set; }
 
         //Constructors
+        //a constructor is "a method-like procedure" that guarantees that the newly
+        //  created instance of this class will ALWAYS be created in
+        //  "a known state"
+
+        //syntax
+        //public constructorname([list of parameters])
+        //{
+        //        your code
+        //}
+
+        //the constructorname is the class name
+        //NOTE: there is NO RETURN DATATYPE
+
+        //constructor(s) are called on your behave WHEN an instance of the class
+        //  is requested by the program
+        //you CAN NOT call a constructor directly like a method.
+
+        //constructor(s) are OPTIONAL
+        //IF a class DOES NOT have a constructor THEN the system
+        //  will generate the class instance using the datatype defaults
+        //  for your private data members and auto implemented properties
+        //this situation of no constructor(S) is often referred to as
+        //  using a "system" constructor
+
+        //IF you code a constructor, then you MUST code ANY and ALL constructor(s)
+        //  needed by your class as used in your programming
+
+        //there are two common type of constructors
+        //  Default constructor
+        //  Greedy constructor
+
+        //Default
+        //this version of the constructor takes NO parameters
+        //this version of the constructor usually similates the "system" constructor
+        //you CAN if you wish assign values to your class data members/properties
+        //  that are NOT the system defaults for the datatype
+
+        public Window()
+        {
+            //techincally numerics are set to zero when they are declared
+            //logically in this class the numeric fields should NOT be zero
+            //therfore, we will set the numeric fields to a literal not equal to zero
+
+            //one could assign a value directly to a privae data member within the class
+            //a preferred method is to use the properties instead
+            //  why?    that property MAY have validation to ensure an acceptable
+            //          value exists for the data
+            //  also, auto implemented properties have no direct private data members
+
+            Height = 0.9m;   //assume the winow height is .9 meters
+            //_Height = 0.9m;
+            Width = 1.2m;
+            NumberofPanes = 1;
+            Manufacturer = null;    //this is optional as a string is default to null anyways
+        }
+
+        //Greedy
+        //takes in a value for each data member/property in the class
+        //each data member/property is assigned the appropriate incoming parameter value
+        public Window(decimal width, decimal height, int? numberofpanes, string manufacturer)
+        {
+            Width = width;
+            Height = height;
+            NumberofPanes = numberofpanes;
+            Manufacturer = manufacturer;
+        }
+
 
         //Behaviours (methods)
     }
