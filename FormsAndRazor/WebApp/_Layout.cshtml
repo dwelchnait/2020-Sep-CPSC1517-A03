@@ -1,0 +1,12 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@Page.Title</title>
+    @RenderSection("head", required: false)
+</head>
+<body>
+    @RenderSection("banner", required: true)
+    @RenderBody()
+    @RenderSection("foot", required: false)
+</body>
+</html>

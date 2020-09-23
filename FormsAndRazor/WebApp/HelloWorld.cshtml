@@ -1,0 +1,38 @@
+﻿@{
+    //the Layout ties this Content page to the desired Layout structure page
+    Layout = "~/_Layout.cshtml";
+}
+
+
+
+@section banner
+        {
+    <div style="color:aqua;">
+
+        This area would be for banner stuff on my web page
+        <h1>Hello World</h1>
+    </div>
+}
+
+
+
+@* anything NOT explicitly in a section will be place in RenderBody *@
+<div>
+
+    <blockquote>
+        This is my first Layout/Content page
+    </blockquote>
+    <p>
+        We are starting to learn about Forms and Razor web pages.
+        The Layout page contains the structure layour of the web page. The Content
+        pae contains the content that appears in the &ltBody&gt tag.
+    </p>
+</div>
+
+@* this is the footer code *@
+@section foot{
+    <div>
+
+        &copy; CPSC1517 Nait Sep 2020
+    </div>
+    }
