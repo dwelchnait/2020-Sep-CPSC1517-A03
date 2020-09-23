@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Sample: TextBox";
+}
+
+@section banner{
+    <div>
+        <h3>Form Using TextBox</h3>
+    </div>}
+
+<div>
+    <form id="theForm" method="post">
+        <table>
+            <tr>
+                <td>Enter your name:</td>
+                <td><input type="text" id="javascriptname" name="cshtmlcodename" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" id="PressMe" name="PressMe">Press Me</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label>this is where your input will be displayed</label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
