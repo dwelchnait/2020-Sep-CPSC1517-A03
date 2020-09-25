@@ -1,6 +1,65 @@
 ﻿@{
+    //when this page executes, the execution is physically top to bottom
+    //this requires the developer to properly create logic so that the
+    //  proper criterial paths are produced
     Layout = "~/_Layout.cshtml";
     Page.Title = "Sample: TextBox";
+    //variables declared at the top, outside of any if processing, are
+    //  global to the entire page
+    string displayLabel = "";
+    var name = "";
+    var email = "";
+    //  extract any need information (data) from the form can also be
+    //  done in this area
+}
+
+@if (IsPost)
+{
+    //IsPost tests whether the page is the 1st time or a post back
+    //  from the browser
+    //the value of the flag will be false on the 1st time
+    //on followup post backs the flag will be true
+
+    //you will do your form processing in this area
+    //possible processing
+    //  extract any need information (data) from the form
+    //  extractinga data from a control uses Request.Form["cshtmlcodename"]
+    //  this is C# coding so case sensitive and spelling is important
+    //  if a controlname is NOT found, you will recieve a value of null
+    //  ALL data comes from the form as a string
+
+    //the datatype var is resolved at execution time whereas a datatype
+    //  like string, int, decimal are resolved at compile time
+    //datatype var does not change its datatype after it is resolved
+    //  until the variable is destroyed
+    name = Request.Form["cshtmlcodename"];
+    email = Request.Form["Email"];
+
+    //note the name PressMe has been given to both buttons
+    //the data returned from the control will be the data assigned
+    //  to the value parameter
+    //thus, thebutton will have a value of either name or email, NOT both
+    //local variable
+    var thebutton = Request.Form["PressMe"];
+
+    //start the processing for your criterial paths
+    if(thebutton.Equals("name"))
+    {
+        //processing to be done when pressing the Display Name button
+        displayLabel = name;
+    }
+    else
+    {
+        //processing to be done when pressing the Display Email button
+        displayLabel = email;
+    }
+}
+else
+{
+    //this logic will be processed on the 1st display of this page
+    //this else coding block should be used to intialize any work
+    //  or displays need by the setup of the form for the 1st time
+    displayLabel = "you have requested this page for the 1st time";
 }
 
 @section banner{
@@ -13,16 +72,33 @@
         <table>
             <tr>
                 <td>Enter your name:</td>
-                <td><input type="text" id="javascriptname" name="cshtmlcodename" /></td>
+                <td><input type="text" id="javascriptname" name="cshtmlcodename" 
+                           value="@name"/></td>
+            </tr>
+            <tr>
+                <td>Enter your email:</td>
+                <td><input type="text" id="Email" name="Email" 
+                           value="@email"/></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button type="submit" id="PressMe" name="PressMe">Press Me</button>
+                    @* One techinque of handling your buttons is to
+                        a) name the buttons the same
+                        b) have a unique text to display on the button
+                        c) add the parameter value to your button, giving it
+                             a unique value so that it can be tested
+                             by your project logic to determine the criterial
+                             path to process*@
+                    <button type="submit" id="PressMe" name="PressMe"
+                            value="name">Display Name</button>
+                    &nbsp;&nbsp;
+                    <button type="submit" id="PressMe" name="PressMe"
+                            value="email">Display Email</button>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <label>this is where your input will be displayed</label>
+                    <label>@displayLabel</label>
                 </td>
             </tr>
         </table>
