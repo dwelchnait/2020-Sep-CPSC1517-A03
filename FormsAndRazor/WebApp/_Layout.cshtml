@@ -15,48 +15,16 @@
     @RenderSection("head", required: false)
 </head>
 <body>
-    @* menu for the web application *@
-    <div class="container">
-        <div class="navbar navbar-inverse">
-            <nav class="navbar navbar-expand-md navbar-light fixed-top">
-                <a class="navbar-brand" href="~/HelloWorld.cshtml">
-                    <strong>Forms and Razor</strong>
-                </a>
-                <button class="navbar-toggler" type="button"
-                        data-toggle="collapse" data-target="#navbarMenuName"
-                        aria-controls="navbarMenuName" aria-expanded="false"
-                        aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarMenuName">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="~/HelloWorld.cshtml"
-                               style="color:black">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#"
-                               id="navbarSubMenu" data-toggle="dropdown"
-                               style="color:black"
-                               aria-haspopup="true" aria-expanded="false">
-                                Samples
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarSubMenu">
-                                <a class="dropdown-item"
-                                   href="~/SamplePages/TextBox.cshtml"
-                                   style="color:black">
-                                    TextBoxes and Buttons
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+    <div class="container-fluid">
+        @* menu for the web application *@
+        @RenderPage("_Menu.cshtml")
+        <br /><br />
+        <div class="jumbotron">
+            @RenderSection("banner", required: true)
         </div>
+
+        @RenderBody()
+        @RenderSection("foot", required: false)
     </div>
-    <br/><br/>
-    @RenderSection("banner", required: true)
-    @RenderBody()
-    @RenderSection("foot", required: false)
 </body>
 </html>
