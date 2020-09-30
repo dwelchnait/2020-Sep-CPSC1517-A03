@@ -199,6 +199,7 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Web.config" />
     <Content Include="_Menu.cshtml" />
+    <Content Include="WebConnectionString.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
