@@ -7,3 +7,68 @@
     <div>
         <h3>Form Using DropDownList (Select control)</h3>
     </div>}
+
+@if (IsPost)
+{
+    var choice = Request.Form["CodingSamples"]; //Request is incoming
+    switch (choice.ToUpper())
+    {
+        case "TEXT":
+            {
+                //go to another page (TextBox.cshtml) without using an anchor tag
+                //use the Response.Redirect("xxxxxx.cshtml") command
+                //navigate from the top of the web site
+                Response.Redirect("~/SamplePages/TextBox.cshtml");
+                break;
+            }
+        case "RADIO":
+            {
+
+                //if the page is within the same folder as the current page
+                //   then you can use just the page name.
+                //the system will tack on the navigation from the top
+                //   of the web site to the current foler
+                Response.Redirect("RadioButtons.cshtml");
+                break;
+            }
+        case "CHECK":
+            {
+                Response.Redirect("~/SamplePages/CheckBoxes.cshtml");
+                break;
+            }
+        default:
+            {
+                //handle an incorrect selection (ie selected the prompt line)
+                <p><span style="color:firebrick">Make a selection from the list of sample choices.</span></p>
+                break;
+            }
+    }
+}
+else
+{
+
+}
+<form id="theForm" method="post">
+    <div class="offset-1">
+        <label for="CodingSamples">Select the sample to view</label><br />
+
+        <select id="CodingSamples" name="CodingSamples">
+            @*  a single select row is created using the option tag
+                the tag has a parameter called value
+                the display text is coded between the opening and closing option tag
+
+                a dropdownlist may contain a prompt line as the first row
+                if there is a prompt line then your processing logic must handle this
+                    selection*@
+            <option value="">select ....</option>
+            <option value="Text">TextBoxes</option>
+            <option value="Radio">RadioButtons</option>
+            <option value="Check">CheckBoxes</option>
+        </select>
+        <br /><br />
+        <button type="submit" name="theButton" id="theButton" value="submit"
+                class="btn btn-info">
+            Submit
+        </button>
+    </div>
+</form>
