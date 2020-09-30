@@ -120,6 +120,7 @@
     <Content Include="SamplePages\RadioButtons.cshtml" />
     <Content Include="SamplePages\CheckBoxes.cshtml" />
     <Content Include="SamplePages\DropDownList.cshtml" />
+    <Content Include="SamplePages\BootstrapFormatting.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
