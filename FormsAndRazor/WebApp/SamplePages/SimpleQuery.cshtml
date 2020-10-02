@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Simple Query";
+    string regionidarg = "";
+    string regionid = "";
+    string description = "";
+}
+
+@section banner{
+    <div>
+        <h3>Form Using Database: Simple Query</h3>
+    </div>}
+
+
+@* this sample will take in a search argument for the Region database table
+   the argument will be a Region primary key value
+   the sql query will attempt to find the Region record that matches the
+       supplied primary key value
+   the page will either display the record data or a not found message*@
+
+@* the form will be a 2 column format
+    left column is input
+    right column is output*@
+<form id="theForm" method="post">
+    <div class="row">
+        <div class="offset-1 col-3">
+            <label for="RegionIDArg">Enter a region id:</label>&nbsp;&nbsp;
+            <input id="RegionIDArg" name="RegionIDArg" type="number" value="@regionidarg"
+                   placeholder="enter a region number" />
+            <br />
+            <button type="submit" name="theButton" id="theButton" value="submit"
+                    class="btn btn-primary">
+                Search
+            </button>&nbsp;&nbsp;
+            <button type="submit" name="theButton" id="theButton" value="clear"
+                    class="btn btn-light">
+                Clear
+            </button>
+        </div>
+        <div class="col-8">
+            <label for="RegionID">Region #:</label>&nbsp;&nbsp;
+            <input id="RegionID" name="RegionID" type="text" value="@regionid" />
+            <br /><br />
+            <label for="RegionDescription">Description:</label>&nbsp;&nbsp;
+            <input id="RegionDescription" name="RegionDescription" type="text" value="@description" />
+        </div>
+    </div>
+</form>
