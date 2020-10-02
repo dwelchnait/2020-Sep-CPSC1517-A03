@@ -13,10 +13,103 @@
 
 
 @* this sample will take in a search argument for the Region database table
-   the argument will be a Region primary key value
-   the sql query will attempt to find the Region record that matches the
-       supplied primary key value
-   the page will either display the record data or a not found message*@
+    the argument will be a Region primary key value
+    the sql query will attempt to find the Region record that matches the
+        supplied primary key value
+    the page will either display the record data or a not found message*@
+
+@if (IsPost)
+{
+    //access all input data IF NOT already done earlier on the page
+    var thebutton = Request.Form["theButton"];
+    regionidarg = Request.Form["RegionIDArg"];
+
+    //IF you have multiple buttons, decide which button was pressed
+    if (thebutton.Equals("clear"))
+    {
+        //the clear button processing
+        regionidarg = "";
+        regionid = "";
+        description = "";
+    }
+    else
+    {
+        //the submit button processing
+        //do I have input?
+        if (regionidarg.IsEmpty())
+        {
+            <p><span style="color:firebrick">You did not supply a search argument.</span></p>
+            regionidarg = ""; //optional
+            regionid = "";
+            description = "";
+        }
+        else
+        {
+            //you could do futher validation to ensure you have a valid value
+            //assume at this point you have a valid argument value
+
+            //access the database to complete the search
+
+            //Step 1
+            //Connect to your database
+            //use the connection string name in our web connection string
+            var db = Database.Open("NWDB");
+
+            //Step 2
+            //create the database sql query command
+            //placeholders will be used for the input data value
+            //placeholders start at 0 and increment by 1
+            //placeholders must linearly be used in your command
+            //placeholders syntax @n (@0 @1 @2 ...)
+            var querycommand = @"SELECT RegionID, RegionDescription
+                                 FROM Region
+                                 WHERE RegionID = @0";
+
+            //Step3
+            //execute the query command
+            //there are 3 ways to execute a query DEPENDING on the EXPECTED
+            //   number of returned records/value
+            // a) a single record returned : .QuerySingle(command [,list of arguments])
+            // b) multiple recors (0, 1 or more) returned : .Query(command [,list of arguments])
+            // c) a single value returned (not a record) : .QueryValue(command [,list of arguments])
+
+            //reminder that the query is by primary key
+            //therefore you can expect ONLY ONE record to be returned
+            var results = db.QuerySingle(querycommand, regionidarg);
+
+            //Step 4
+            //check your results and process accordingly
+            //for a) and c) you will test your results against the value null
+            //for b) you will test your results against .Count == 0
+
+            if (results == null)
+            {
+                //no record was returned
+                regionid = "";
+                description = "";
+                <p>No record found for region id: @regionidarg.</p>
+            }
+            else
+            {
+                //a (single) record was returned
+                <p>Found</p>
+                //There are two ways to retreive a value from a queried record
+
+                //a) accessing using an index
+                regionid = results[0].ToString();  //pkey is an int, convert to a string
+
+                //b) access using the column title string
+                description = results.RegionDescription;
+            }
+        }
+    }
+}
+else
+{
+    regionidarg = "";
+    regionid = "";
+    description = "";
+}
 
 @* the form will be a 2 column format
     left column is input
