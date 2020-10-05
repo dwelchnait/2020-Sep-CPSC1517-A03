@@ -1,0 +1,102 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Multi-Record Query";
+
+    //we need the categories from the database
+    //   on each and every pass, therefore
+    //   we can access the data globally
+    var db = Database.Open("NWDB");
+    var ddlcommand = @"SELECT CategoryID, CategoryName
+FROM Categories
+ORDER BY CategoryName";
+    //we are retrieving, possibly, multiple records from
+    //  a database table (0, 1 or more)
+    //therefore we need to use the .Query() execution
+    var ddlResults = db.Query(ddlcommand);
+    var categoryselection = "0";
+}
+
+@section banner{
+    <div>
+        <h3>Form Using Database: Multi-Record Query</h3>
+    </div>}
+
+@if (IsPost)
+{
+    //retrieve the selection from the ddl
+    categoryselection = Request.Form["CategoryList"];
+
+    //test for the prompt line selection
+    if (categoryselection.Equals("0"))
+    {
+        <p><span style="color:firebrick">Make a selection from the category list.</span></p>
+    }
+    else
+    {
+        //determine  if there is anything to display
+        //  for the selected category
+        //execute a query against the Product table
+        var querysearch = @"SELECT ProductID
+                            FROM Products
+                            WHERE CategoryID = @0";
+        var results = db.Query(querysearch, categoryselection);
+        //to test if any records were returned from the sql query
+        //      use .Count() == 0 (no records returned)
+        if (results.Count() == 0)
+        {
+            <p><span style="color:firebrick">No products found for category list selectiion.</span></p>
+
+        }
+        else
+        {
+            // <p><span style="color:green">Category selection has @results.Count() products.</span></p>
+            //pass the category id to another page to display the list
+            //       of products
+            Response.Redirect("WebGridDemo.cshtml?cid=" + categoryselection);
+        }
+    }
+}
+else
+{
+    categoryselection = "0";
+}
+<form id="theForm" method="post">
+    <div class="row">
+        <div class="offset-3">
+            <label for="CategoryList">Select a category</label>&nbsp;&nbsp;
+            <select name="CategoryList" id="CategoryList">
+                @* prompt line *@
+                <option value="0">select ....</option>
+                @* loop through the record collection for Categories
+                    for each record we need to create a line in the
+                        dropdownlist
+                    for each record we will have a value of the ID and
+                         display text of the name*@
+                @foreach (var catItem in ddlResults)
+                {
+                    //to retain the selection in your list
+                    //  using the selected value of the user
+                    //  we need to match the selection value
+                    //  against the current catItem being processed
+                    if (categoryselection == catItem.CategoryID.ToString())
+                    {
+                        <option value="@catItem.CategoryID" selected>
+                            @catItem.CategoryName
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@catItem.CategoryID">
+                            @catItem.CategoryName
+                        </option>
+                    }
+
+                }
+            </select>&nbsp;&nbsp;
+            <button type="submit" name="theButton" id="theButton"
+                    value="submit" class="btn btn-primary">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
