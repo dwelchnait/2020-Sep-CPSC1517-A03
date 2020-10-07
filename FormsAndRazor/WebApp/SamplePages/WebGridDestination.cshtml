@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "WebGrid Destination";
+    var pid = Request.QueryString["pid"];
+}
+
+@section banner{
+    <div>
+        <h3>Displaying Data in WebGrid</h3>
+    </div>
+}
+
+<div class="row">
+    <div class="offset-1">
+        You pass the product id value of @pid to this page 
+    </div>
+</div>

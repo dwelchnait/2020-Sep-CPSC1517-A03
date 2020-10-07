@@ -1,9 +1,88 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = "WebGrid Demo";
+
+    //recieve the data from another page
+    //the data is passed using the GetHtml()
+    //To obtain the passed data from the Url
+    //   we will use Request.QueryString["label"]
+    //IF the label does NOT exist, QueryString returns a null
+    var incomingDataValue = Request.QueryString["cid"];
+
+    //check to see if the label actually existed, if not
+    //  bounce your user back to the appropriate page
+    if(string.IsNullOrEmpty(incomingDataValue))
+    {
+        Response.Redirect("MultiRecordQuery.cshtml");
+    }
+
+    //on this demo page, we are only going to display the
+    //database products for the incoming category value
+    var db = Database.Open("NWDB");
+    var productquery = @"SELECT ProductID, ProductName, UnitPrice,
+                            QuantityPerUnit, Discontinued
+                         FROM Products
+                         WHERE CategoryId = @0";
+    var productresults = db.Query(productquery, incomingDataValue);
+
+    //to display the data in a tabular form, we can use WebGrid
+    //you will notice that the data collection is passed to
+    //   the web control WHEN the instance (object) is created
+    //to set your page size (rows per page) you need to do this when
+    //   you first create the webgrid instance (NOT in GetHtml())
+    var gridinstance = new WebGrid(productresults, rowsPerPage:3);
+
+    //retrieve the CategoryName for the passed data
+    //(yes the name could have been passed as a parameter)
+    //demo the third way to execute a command
+    //      use the .QueryValue() command
+    //.QueryValue() return a SINGLE value (not a record)
+    //test your execution against:  null
+    var getcategoryname = @"SELECT CategoryName
+                            FROM Categories
+                            WHERE CategoryID = @0";
+    var categoryname = db.QueryValue(getcategoryname, incomingDataValue);
+    if (string.IsNullOrEmpty(categoryname))
+    {
+        categoryname = "unknown";
+    }
+
 }
 
 @section banner{
     <div>
         <h3>Displaying Data in WebGrid</h3>
-    </div>}
+    </div>
+    }
+<div class="row">
+    <div class="offset-1">
+        <h5>Category: @categoryname</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="offset-1 col-10">
+        @*display the using .GetHtml()*@
+        @gridinstance.GetHtml(
+            tableStyle: "table table-striped table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            firstText: "Start",
+            lastText: "End",
+            columns: gridinstance.Columns(
+                gridinstance.Column(columnName: "ProductID", header: "ID"),
+                gridinstance.Column(columnName: "ProductName", header: "Product"),
+                gridinstance.Column(columnName: "QuantityPerUnit", header: "Pkg"),
+                gridinstance.Column(columnName: "UnitPrice", header: "$",
+                    format: (item) => item.UnitPrice.ToString("0.00")),
+                gridinstance.Column(columnName: "Discontinued", header: "Disc.",
+                    format: @<input name="Discontinued" type="checkbox"
+                                    value="@item.Discontinued"
+                                    @(item.Discontinued == true ? "Checked" : "")
+                                    disabled="disabled" />),
+                gridinstance.Column(header: "",
+                    format:@<text>
+                            <a href="~/SamplePages/WebGridDestination.cshtml?pid=@item.ProductID"
+                               onclick="return confirm('Are you sure you wish to view @item.ProductName?')">View</a>
+                            </text>)
+                ))
+    </div>
+</div>

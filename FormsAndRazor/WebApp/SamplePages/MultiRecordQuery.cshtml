@@ -52,6 +52,12 @@ ORDER BY CategoryName";
             // <p><span style="color:green">Category selection has @results.Count() products.</span></p>
             //pass the category id to another page to display the list
             //       of products
+            //syntax
+            //    pagename.ext?label=value&label2=value2.....
+            //  pagename.ext is the page
+            //  ? indicates parameter(s) to follow
+            //  parameter: label=value
+            //  & separates multiple parameters
             Response.Redirect("WebGridDemo.cshtml?cid=" + categoryselection);
         }
     }
