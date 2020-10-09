@@ -1,0 +1,235 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "CRUD - Insert";
+
+    var thebutton = Request.Form["theButton"];
+    var productname = "";
+    var supplierid = "";
+    var categoryid = "";
+    var quantityperunit = "";
+    var unitprice = "";
+    var unitsinstock = "";
+    var unitsonorder = "";
+    var reorderlevel = "";
+    var discontinued = "";
+
+    //obtain the record collections (dataset) for the supplierid and categoryid
+    var db = Database.Open("NWDB");
+    var supplierquery = @"SELECT SupplierID, CompanyName
+            FROM Suppliers
+            Order by CompanyName";
+    var categoryquery = @"SELECT CategoryID, CategoryName
+            FROM Categories
+            Order by CategoryName";
+    var supplierlist = db.Query(supplierquery);
+    var categorylist = db.Query(categoryquery);
+}
+
+
+@section banner{
+    <h1>CRUD - Insert</h1>
+    <blockquote class="alert alert-info">
+        This form will  demonstrate the create (insert) of CRUD. It will demonstrate
+        using bootstrap text alignment for setting up right aligned text, default
+        left aligned web controls and centered aligned buttons. The Input controls
+        and their label text controls are in a 2 column format. The submit buttons
+        are centered on another row. Tool tips are used on the web controls as are
+        placeholder prases. Try/Catch will be used to capture processing errors.
+        <br /><br />
+        The Products table will be maintained. It has a primary identity key. Thus, no need for a
+        field for the primay key is required on this form. This form ONLY does insert. However,
+        if you wished to have a field to display the new primary key when it is created,
+        you could create a &ltLabel&gt field for the output display of the primary key.
+    </blockquote>
+}
+
+@if (IsPost)
+{
+    //the form has multiple buttons
+    //determine which button was pressed THEN do that action
+    if (thebutton.Equals("clear"))
+    {
+        //remove the current values in the input/select fields
+        productname = "";
+        supplierid = "0";
+        categoryid = "0";
+        quantityperunit = "";
+        unitprice = "";
+        unitsinstock = "";
+        unitsonorder = "";
+        reorderlevel = "";
+        discontinued = "";
+    }
+    else
+    {
+        //process the data to add to the database
+        //retrieve the data from the controls
+        productname = Request.Form["ProductName"];
+        supplierid = Request.Form["SupplierList"];
+        categoryid = Request.Form["CategoryList"];
+        quantityperunit = Request.Form["QuantityPerUnit"];
+        unitprice = Request.Form["UnitPrice"];
+        unitsinstock = Request.Form["UnitsInStock"];
+        unitsonorder = Request.Form["UnitsOnOrder"];
+        reorderlevel = Request.Form["ReorderLevel"];
+        discontinued = Request.Form["Discontinued"];
+        //check any validation (validation controls)
+        //if good
+        //   within try/catch
+        try
+        {
+            //you MAY need to do additional LOGICAL validation
+            //example: Lets assume that the supplier id is a required field
+            //          Lets assume the validation was not performed by
+            //          HTML5 or unit validation controls
+            if (string.IsNullOrEmpty(supplierid) || int.Parse(supplierid) == 0)
+            {
+                throw new Exception("Invalid supplier ID. Please select from the supplied list");
+            }
+
+            //      create the sql insert command
+            var insertcommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
+                        QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
+                        ReorderLevel, Discontinued)
+                    VALUES(@0, @1, @2, @3, @4, @5, @6, @7, @8)";
+            //      execute the command
+            //      to execute an insert, update or deleted command, use: .Execute()
+            db.Execute(insertcommand, productname,
+                int.Parse(supplierid) == -1 ? null : supplierid,
+                int.Parse(categoryid) == -1 ? null : categoryid,
+                string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
+                string.IsNullOrEmpty(unitprice) ? "0.00" : unitprice,
+                string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
+                string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
+                string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel,
+                0);
+            //      issue a success message
+            //      retrieve the new identity primary key value
+            var lastprimarykeyvalue = db.GetLastInsertId();
+            //      message
+            <p class="col-12 text-center">
+                <span style="color:forestgreen">
+                    <strong>New Product Added: ID of @lastprimarykeyvalue</strong>
+                </span>
+            </p>
+        }
+        catch (Exception ex)
+        {
+            //      catch: display the error
+            <p class="col-12 text-center">
+                <span style="color:firebrick">
+                    <strong>Error: @ex.Message</strong>
+                </span>
+            </p>
+        }
+    }
+}
+else
+{
+    //to initialize fields on the your form during the 1st pass of the page
+    productname = "";
+    supplierid = "0";
+    categoryid = "0";
+    quantityperunit = "";
+    unitprice = "";
+    unitsinstock = "";
+    unitsonorder = "";
+    reorderlevel = "";
+    discontinued = "";
+}
+<form id="theForm" method="post">
+    <div class="row">
+        <div class="col-md-6 text-right">
+            <label for="ProductName">Name: </label><br />
+            <label for="SupplierList">Supplier: </label><br />
+            <label for="CategoryID">Category: </label><br />
+            <label for="QuantityPerUnit">Qty/Unit: </label><br />
+            <label for="UnitPrice">Price: </label><br />
+            <label for="UnitsInStock">QoH: </label><br />
+            <label for="UnitsOnOrder">QOO: </label><br />
+            <label for="ReorderLevel">RoL: </label><br />
+            <label for="Discontinued">Disc.: </label><br /><br />
+        </div>
+        <div class="col-md-6">
+            @* the title= parameter is the control's ToolTip *@
+            <input type="text" id="ProductName" name="ProductName"
+                   placeholder="enter product name" title="Product Name"
+                   value="@productname" /><br />
+            <select id="SupplierList" name="SupplierList">
+                <option value="0">select supplier ...</option>
+                @* this option is used by the user to select the
+                    possibility of having no foreign key*@
+                <option value="-1">None</option>
+                @* traverse the collection adding one option tag
+                     per collection item (record)
+                    set up the ddl to retain the selected value*@
+                @foreach (var supplierItem in supplierlist)
+                {
+                    if (supplierid.Equals(supplierItem.SupplierID.ToString()))
+                    {
+                        <option value="@supplierItem.SupplierID" selected>
+                            @supplierItem.CompanyName
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@supplierItem.SupplierID">
+                            @supplierItem.CompanyName
+                        </option>
+                    }
+                }
+
+            </select><br />
+            <select id="CategoryList" name="CategoryList">
+                <option value="0">select category ...</option>
+                @* this option is used by the user to select the
+                    possibility of having no foreign key*@
+                <option value="-1">None</option>
+                @* traverse the collection adding one option tag
+                     per collection item (record)
+                    set up the ddl to retain the selected value*@
+                @foreach (var categoryItem in categorylist)
+                {
+                    if (categoryid.Equals(categoryItem.CategoryID.ToString()))
+                    {
+                        <option value="@categoryItem.CategoryID" selected>
+                            @categoryItem.CategoryName
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@categoryItem.CategoryID">
+                            @categoryItem.CategoryName
+                        </option>
+                    }
+                }
+            </select><br />
+            <input type="text" id="QuantityPerUnit" name="QuantityPerUnit"
+                   value="@quantityperunit" /><br />
+            <input type="text" id="UnitPrice" name="UnitPrice"
+                   value="@unitprice" /><br />
+            <input type="text" id="UnitsInStock" name="UnitsInStock"
+                   value="@unitsinstock" /><br />
+            <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
+                   value="@unitsonorder" /><br />
+            <input type="text" id="ReorderLevel" name="ReorderLevel"
+                   value="@reorderlevel" /><br />
+            <input type="checkbox" id="Discontinued" name="Discontinued"
+                   @(string.IsNullOrEmpty(discontinued) ? "" : "checked") /> (discontinued if checked)<br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="submit" name="theButton" id="theButton" value="submit"
+                    class="btn btn-primary">
+                Submit
+            </button>&nbsp;&nbsp;
+            <button type="submit" name="theButton" id="theButton" value="clear"
+                    class="btn btn-light">
+                Clear
+            </button>
+        </div>
+    </div>
+</form>
+
+

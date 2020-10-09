@@ -4,3 +4,10 @@
     background-color: #e9ecef;
     border-radius: 0.3rem;
 }
+input{
+    margin: 2px 0;
+}
+
+select {
+    margin: 2px 0;
+}
