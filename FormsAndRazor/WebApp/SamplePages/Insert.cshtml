@@ -23,10 +23,70 @@
             Order by CategoryName";
     var supplierlist = db.Query(supplierquery);
     var categorylist = db.Query(categoryquery);
+
+    //Using Validation Controls
+    //Validation controls execute BOTH on the client-side and serve-side
+    //see: https://www.mikesdotnetting.com/article/191/validation-in-razor-web-pages-2
+    //Validation controls can be used with HTML5
+    //3 components to Validation controls
+    // a) the validation
+    // b) a place to report the error
+    // c) command to execute validation
+    //Validation controls (excepted for Required) only kick in if data is present
+    //To execute the validation control, you will need to have a command (c)
+    //   in your code call Validation.IsValid()
+
+    //Required and StringLength
+    Validation.Add("ProductName",
+        Validator.Required("Product name is a required field"),
+        Validator.StringLength(40,1,"Product name is limited to 40 characters"));
+
+    //nullable text and StringLength
+    Validation.Add("QuantityPerUnit",
+        Validator.StringLength(20, 0, "Quantity per unit is limited to 20 characters"));
+
+    //nullable money field
+    //in this example UnitPrice has been validated using HTML5
+    //    therefore, this validation will always be good for datatype
+    //.Range her is being used use for indicating a "floor" with a max "Ceiling"
+    Validation.Add("UnitPrice",
+        Validator.Decimal("Unit price must be a dollar amount"),
+        Validator.Range(0.00, double.MaxValue, "Unit price must be greater or equal to 0.00"));
+
+    //nullable integer field
+    //.Range her is being used use for indicating a "floor" with a max "Ceiling"
+    //the UnitsInStock, UnitsOnOrder, ReorderLevel are smallint on the database (max 32757)
+    Validation.Add("UnitsInStock",
+        Validator.Integer("Units in stock must be a positive amount"),
+        Validator.Range(0, 32767, "Units in stock must be greater or equal to 0"));
+    Validation.Add("UnitsOnOrder",
+        Validator.Integer("Units on order must be a positive amount"),
+        Validator.Range(0, 32767, "Units on order must be greater or equal to 0"));
+    Validation.Add("ReorderLevel",
+        Validator.Integer("Reorder level must be a positive amount"),
+        Validator.Range(0, 32767, "Reorder level must be greater or equal to 0"));
+
+    //pattern matching using RegEx() regular expression
+    //lets assume we have a field called Email
+    //HTML5 could validate field using type="email"
+    //Validation controls would use .RegEx(expression, message)
+    //see email matching expressions https://emailregex.com
+    //Validation.Add("Email",
+    //      Validator.RegEx(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$","Invalid email"));
+    //postal code
+    //Validation.Add("Postalcode",
+    //      Validator.RegEx(@"[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]","Invalid postal code (T9T9T9)"));
+
+    //comparing two fields
+    //example password and confirm password
+    //Validation.Add("ConfirmPassword",
+    //      Validator.EqualsTo("PassWord", "Password is not confirmed. Try again"));
+
+
 }
 
 
-@section banner{
+            @section banner{
     <h1>CRUD - Insert</h1>
     <blockquote class="alert alert-info">
         This form will  demonstrate the create (insert) of CRUD. It will demonstrate
@@ -43,85 +103,91 @@
     </blockquote>
 }
 
-@if (IsPost)
-{
-    //the form has multiple buttons
-    //determine which button was pressed THEN do that action
-    if (thebutton.Equals("clear"))
+    @if (IsPost)
     {
-        //remove the current values in the input/select fields
-        productname = "";
-        supplierid = "0";
-        categoryid = "0";
-        quantityperunit = "";
-        unitprice = "";
-        unitsinstock = "";
-        unitsonorder = "";
-        reorderlevel = "";
-        discontinued = "";
-    }
-    else
-    {
-        //process the data to add to the database
-        //retrieve the data from the controls
-        productname = Request.Form["ProductName"];
-        supplierid = Request.Form["SupplierList"];
-        categoryid = Request.Form["CategoryList"];
-        quantityperunit = Request.Form["QuantityPerUnit"];
-        unitprice = Request.Form["UnitPrice"];
-        unitsinstock = Request.Form["UnitsInStock"];
-        unitsonorder = Request.Form["UnitsOnOrder"];
-        reorderlevel = Request.Form["ReorderLevel"];
-        discontinued = Request.Form["Discontinued"];
-        //check any validation (validation controls)
-        //if good
-        //   within try/catch
-        try
+        //the form has multiple buttons
+        //determine which button was pressed THEN do that action
+        if (thebutton.Equals("clear"))
         {
-            //you MAY need to do additional LOGICAL validation
-            //example: Lets assume that the supplier id is a required field
-            //          Lets assume the validation was not performed by
-            //          HTML5 or unit validation controls
-            if (string.IsNullOrEmpty(supplierid) || int.Parse(supplierid) == 0)
+            //remove the current values in the input/select fields
+            productname = "";
+            supplierid = "0";
+            categoryid = "0";
+            quantityperunit = "";
+            unitprice = "";
+            unitsinstock = "";
+            unitsonorder = "";
+            reorderlevel = "";
+            discontinued = "";
+        }
+        else
+        {
+            //process the data to add to the database
+            //retrieve the data from the controls
+            productname = Request.Form["ProductName"];
+            supplierid = Request.Form["SupplierList"];
+            categoryid = Request.Form["CategoryList"];
+            quantityperunit = Request.Form["QuantityPerUnit"];
+            unitprice = Request.Form["UnitPrice"];
+            unitsinstock = Request.Form["UnitsInStock"];
+            unitsonorder = Request.Form["UnitsOnOrder"];
+            reorderlevel = Request.Form["ReorderLevel"];
+            discontinued = Request.Form["Discontinued"];
+            //check any validation (validation controls)
+            //execute the command Validation.IsValid() to cause the
+            //     execution of your validation controls
+            //WARNING: without this command your validation controls DO NOT run
+            if (Validation.IsValid())
             {
-                throw new Exception("Invalid supplier ID. Please select from the supplied list");
-            }
+                //if good
+                //   within try/catch
+                try
+                {
+                    //you MAY need to do additional LOGICAL validation
+                    //example: Lets assume that the supplier id is a required field
+                    //          Lets assume the validation was not performed by
+                    //          HTML5 or unit validation controls
+                    if (string.IsNullOrEmpty(supplierid) || int.Parse(supplierid) == 0)
+                    {
+                        throw new Exception("Invalid supplier ID. Please select from the supplied list");
+                    }
 
-            //      create the sql insert command
-            var insertcommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
+                    //      create the sql insert command
+                    var insertcommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
                         QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
                         ReorderLevel, Discontinued)
                     VALUES(@0, @1, @2, @3, @4, @5, @6, @7, @8)";
-            //      execute the command
-            //      to execute an insert, update or deleted command, use: .Execute()
-            db.Execute(insertcommand, productname,
-                int.Parse(supplierid) == -1 ? null : supplierid,
-                int.Parse(categoryid) == -1 ? null : categoryid,
-                string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
-                string.IsNullOrEmpty(unitprice) ? "0.00" : unitprice,
-                string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
-                string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
-                string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel,
-                0);
-            //      issue a success message
-            //      retrieve the new identity primary key value
-            var lastprimarykeyvalue = db.GetLastInsertId();
-            //      message
+                    //      execute the command
+                    //      to execute an insert, update or deleted command, use: .Execute()
+                    db.Execute(insertcommand, productname,
+                        int.Parse(supplierid) == -1 ? null : supplierid,
+                        int.Parse(categoryid) == -1 ? null : categoryid,
+                        string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
+                        string.IsNullOrEmpty(unitprice) ? "0.00" : unitprice,
+                        string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
+                        string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
+                        string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel,
+                        0);
+                    //      issue a success message
+                    //      retrieve the new identity primary key value
+                    var lastprimarykeyvalue = db.GetLastInsertId();
+                //      message
             <p class="col-12 text-center">
                 <span style="color:forestgreen">
                     <strong>New Product Added: ID of @lastprimarykeyvalue</strong>
                 </span>
             </p>
-        }
-        catch (Exception ex)
-        {
-            //      catch: display the error
+            }
+            catch (Exception ex)
+            {
+                //      catch: display the error
             <p class="col-12 text-center">
                 <span style="color:firebrick">
                     <strong>Error: @ex.Message</strong>
                 </span>
             </p>
-        }
+            }
+        }//eof validation isvalid test NOTE NO else
     }
 }
 else
@@ -137,6 +203,13 @@ else
     reorderlevel = "";
     discontinued = "";
 }
+
+@* using the ValidationSummary() control, you will automatically see
+       a bulleted list of error messages from you validation controls
+   REMINDER: this control needs to be place on your web page AFTER
+      the Validation.IsValid() command*@
+@Html.ValidationSummary()
+
 <form id="theForm" method="post">
     <div class="row">
         <div class="col-md-6 text-right">
@@ -154,15 +227,20 @@ else
             @* the title= parameter is the control's ToolTip *@
             <input type="text" id="ProductName" name="ProductName"
                    placeholder="enter product name" title="Product Name"
-                   value="@productname" /><br />
+                   value="@productname" />
+            @* optionally, you coud place your error message right beside
+                     the control that is in error
+                     Html.ValidationMessage("fieldname","error message")*@
+            @Html.ValidationMessage("ProductName", " * ")
+            <br />
             <select id="SupplierList" name="SupplierList">
                 <option value="0">select supplier ...</option>
                 @* this option is used by the user to select the
-                    possibility of having no foreign key*@
+            possibility of having no foreign key*@
                 <option value="-1">None</option>
                 @* traverse the collection adding one option tag
-                     per collection item (record)
-                    set up the ddl to retain the selected value*@
+             per collection item (record)
+            set up the ddl to retain the selected value*@
                 @foreach (var supplierItem in supplierlist)
                 {
                     if (supplierid.Equals(supplierItem.SupplierID.ToString()))
@@ -183,11 +261,11 @@ else
             <select id="CategoryList" name="CategoryList">
                 <option value="0">select category ...</option>
                 @* this option is used by the user to select the
-                    possibility of having no foreign key*@
+            possibility of having no foreign key*@
                 <option value="-1">None</option>
                 @* traverse the collection adding one option tag
-                     per collection item (record)
-                    set up the ddl to retain the selected value*@
+             per collection item (record)
+            set up the ddl to retain the selected value*@
                 @foreach (var categoryItem in categorylist)
                 {
                     if (categoryid.Equals(categoryItem.CategoryID.ToString()))
@@ -206,8 +284,18 @@ else
             </select><br />
             <input type="text" id="QuantityPerUnit" name="QuantityPerUnit"
                    value="@quantityperunit" /><br />
-            <input type="text" id="UnitPrice" name="UnitPrice"
-                   value="@unitprice" /><br />
+            @* html5 client side browser validation
+         restrict the input to a number (type="number")
+        this field requires a decimal number; the default
+           of "number" is integer'; to get around this
+           problem use the step="n" parameter; in this
+           case n will be 0.01
+        this field is nullable BUT if it was required
+           you could use the keyword: required
+        If there was a price range, you could use
+         min="n" and/or max="n"*@
+            <input type="number" id="UnitPrice" name="UnitPrice"
+                   value="@unitprice" step="0.01" /><br />
             <input type="text" id="UnitsInStock" name="UnitsInStock"
                    value="@unitsinstock" /><br />
             <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
