@@ -1,0 +1,78 @@
+﻿@{
+    Page.Title = "Product Search";
+    Layout = "~/_Layout.cshtml";
+    var productsearch = Request.Form["ProductSearch"];
+
+    var db = Database.Open("NWDB");
+    var partialsearchstring = "%" + productsearch + "%";
+
+    var queryStatement = "SELECT ProductID, ProductName Name, CategoryID, UnitPrice, UnitsInStock "
+                        + "FROM Products "
+                        + "WHERE ProductName like @0 "
+                        + "ORDER BY ProductName";
+   
+}
+@section banner{
+    <h1>Product Search</h1>
+}
+<div class="form-group">
+  
+    <form id="theForm" method="post">
+        <div class="row">
+            <div class="col-sm-3">
+                <label id="forProductSearch">Product Name</label><br />
+                <input type="text" name="ProductSearch" value=" @productsearch"><br /><br />
+                <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>
+
+            </div>
+
+            <div class="col-sm-8">
+                @if (IsPost)
+                {
+                    if (productsearch.IsEmpty())
+                    {
+                        <p><strong><span style="color:firebrick">Enter a product name (or partial name).</span></strong></p>
+                    }
+                    else
+                    {
+                        var queryProducts = db.Query(queryStatement, partialsearchstring);
+                        if (queryProducts.Count() == 0)
+                        {
+                            <p><strong><span style="color:firebrick">Nothing found for search argument.</span></strong></p>
+                        }
+                        else
+                        {
+                            var grid = new WebGrid(queryProducts);
+                            @grid.GetHtml("table table-bordered table-striped table-hover",
+                            mode: WebGridPagerModes.All,
+                            lastText: "Last",
+                            firstText: "First",
+                            columns: grid.Columns(
+                            grid.Column(columnName: "ProductID", header: "ID"),
+                            grid.Column(columnName: "Name"),
+                            grid.Column(columnName: "CategoryID", header: "Cat"),
+                            grid.Column(columnName: "UnitPrice", header: "$"),
+                            grid.Column(columnName: "UnitsInStock", header: "UOS"),
+                            grid.Column(header: "", format:@<text><a href="~/SamplePages/ProductEdit.cshtml?pid=@item.ProductID">Edit</a></text>)
+));
+                        }
+                    }
+                }
+            </div>
+        </div>
+        @* Since the webgrid is in the form which uses a Method(post), the webgrid
+            paging is NOT working. WHY? the webgrid uses a Method(get). Thus there
+            is a conflict on paging.
+            
+            To solve this problem, we add the following script to cause a post to
+            happen on the webgrid's paging event.*@
+        <script type="text/javascript">
+            var links = $('a[href*=page], a[href*=sort]'), form = $('form');
+            links.click(function () {
+                form.attr("action", this.href);
+                $(this).attr("href", "javascript:");
+                form.submit();
+            });
+        </script>
+    </form>
+</div> 
