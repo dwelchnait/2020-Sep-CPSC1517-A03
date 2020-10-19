@@ -295,7 +295,7 @@ else
         If there was a price range, you could use
          min="n" and/or max="n"*@
             <input type="number" id="UnitPrice" name="UnitPrice"
-                   value="@unitprice" step="0.01" /><br />
+                   value="@unitprice" step="0.01" min="0.00"/><br />
             <input type="text" id="UnitsInStock" name="UnitsInStock"
                    value="@unitsinstock" /><br />
             <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
@@ -312,8 +312,12 @@ else
                     class="btn btn-primary">
                 Submit
             </button>&nbsp;&nbsp;
+            @* the parameter formnovalidate will tell your browser NOT to validate
+                HTML5 validation. Since validatin controls are executed by
+                Validation.IsValid(), properly implemented logic will ensre whether
+                the validatin controls are executed or NOT.*@
             <button type="submit" name="theButton" id="theButton" value="clear"
-                    class="btn btn-light">
+                    class="btn btn-light" formnovalidate>
                 Clear
             </button>
         </div>
