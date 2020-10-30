@@ -15,12 +15,12 @@
         </div>
          <div class="col-md-6">
              <asp:TextBox ID="NumberChoice" runat="server"
-                  width="50px" Height="30px"
+                  width="50px" Height="30px" 
                   ToolTip="Enter a number from 1 to 4"
                   placeholder="1"></asp:TextBox>
              &nbsp;&nbsp;
              <asp:Button ID="SubmitNumberChoice" runat="server" 
-                 Text="Submit Number Choice" CssClass="btn btn-success" />
+                 Text="Submit Number Choice" CssClass="btn btn-success" OnClick="SubmitNumberChoice_Click" />
         </div>
     </div>
      <%-- RadioButtons --%>
@@ -31,11 +31,12 @@
             </asp:Label>
         </div>
          <div class="col-md-6">
-             <asp:RadioButtonList ID="RadioButtonListChoice" runat="server">
-                 <asp:ListItem Value="1">COMP1008</asp:ListItem>
-                 <asp:ListItem Value="2">CPSC1517</asp:ListItem>
-                 <asp:ListItem Value="3">DMIT1508</asp:ListItem>
-                 <asp:ListItem Value="4">DMIT2018</asp:ListItem>
+             <asp:RadioButtonList ID="RadioButtonListChoice" runat="server" 
+                 RepeatDirection="Horizontal" RepeatLayout="Flow">
+                 <asp:ListItem Value="1">&nbsp;COMP1008&nbsp;</asp:ListItem>
+                 <asp:ListItem Value="2">&nbsp;CPSC1517&nbsp;</asp:ListItem>
+                 <asp:ListItem Value="3">&nbsp;DMIT1508&nbsp;</asp:ListItem>
+                 <asp:ListItem Value="4">&nbsp;DMIT2018&nbsp;</asp:ListItem>
              </asp:RadioButtonList>
         </div>
     </div>
@@ -49,7 +50,7 @@
         </div>
          <div class="col-md-6">
              <asp:CheckBox ID="CheckBoxChoice" runat="server" 
-                 text=" (checked if a programming lanquage"/>
+                 text="&nbsp;(checked if a programming lanquage"/>
         </div>
     </div>
      <%-- Literal/Label --%>
@@ -71,8 +72,9 @@
             </asp:Label>
         </div>
          <div class="col-md-6">
+             <%-- dropdownlist converts to a <select> --%>
              <asp:DropDownList ID="CollectionList" runat="server">
-
+                 
              </asp:DropDownList>
              &nbsp;&nbsp;
              <asp:LinkButton ID="LinkButtonChoice" runat="server">
