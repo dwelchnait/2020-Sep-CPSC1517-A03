@@ -77,7 +77,7 @@
                  
              </asp:DropDownList>
              &nbsp;&nbsp;
-             <asp:LinkButton ID="LinkButtonChoice" runat="server">
+             <asp:LinkButton ID="LinkButtonChoice" runat="server" OnClick="LinkButtonChoice_Click">
                  Submit Collection Choice</asp:LinkButton>
         </div>
     </div>
