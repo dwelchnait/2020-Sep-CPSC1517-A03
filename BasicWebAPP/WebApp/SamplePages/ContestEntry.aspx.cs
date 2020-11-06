@@ -22,47 +22,59 @@ namespace WebApp.SamplePages
         protected void Page_Load(object sender, EventArgs e)
         {
             Message.Text = "";
+
+            //check your Page.IsPostBack to see if this is the
+            //      1st presentation of the page (IsPostBack = false)
+            if (!Page.IsPostBack)
+            {
+                EntryList.DataSource = entries;
+                EntryList.DataBind();
+            }
         }
 
         protected void Submit_Click(object sender, EventArgs e)
         {
-            if (Terms.Checked)
+            //to execute the validation controls (not Html5) on the server side
+            if (Page.IsValid)
             {
-                //i could check the math answer in my code behind
-                //BUT we will do that using validation controls
+                if (Terms.Checked)
+                {
+                    //i could check the math answer in my code behind
+                    //BUT we will do that using validation controls
 
-                //record my entry
-                //collect all the entries and display them
+                    //record my entry
+                    //collect all the entries and display them
 
-                //create an instance of the data class
-                Entry theEntry = new Entry();
+                    //create an instance of the data class
+                    Entry theEntry = new Entry();
 
-                //load the instance with data from the form
-                theEntry.FirstName = FirstName.Text;
-                theEntry.LastName = LastName.Text;
-                theEntry.StreetAddress1 = StreetAddress1.Text;
-                theEntry.StreetAddress2 =
-                    string.IsNullOrEmpty(StreetAddress2.Text) ? null : StreetAddress2.Text;
-                theEntry.City = City.Text;
-                theEntry.Province = Province.SelectedValue;  //ddl
-                theEntry.PostalCode = PostalCode.Text;
-                theEntry.EmailAddress = EmailAddress.Text;
+                    //load the instance with data from the form
+                    theEntry.FirstName = FirstName.Text;
+                    theEntry.LastName = LastName.Text;
+                    theEntry.StreetAddress1 = StreetAddress1.Text;
+                    theEntry.StreetAddress2 =
+                        string.IsNullOrEmpty(StreetAddress2.Text) ? null : StreetAddress2.Text;
+                    theEntry.City = City.Text;
+                    theEntry.Province = Province.SelectedValue;  //ddl
+                    theEntry.PostalCode = PostalCode.Text;
+                    theEntry.EmailAddress = EmailAddress.Text;
 
-                //add the new instance to a collection of entries
-                entries.Add(theEntry);
+                    //add the new instance to a collection of entries
+                    entries.Add(theEntry);
 
-                //display the collection
-                //use a collection display control that displays
-                //      multiple separate columns: GridView
-                //requirements:
-                // a) assign data source (DataSource)
-                // b) bind the data to the control
-                EntryList.DataSource = entries;
-                EntryList.DataBind();
-            }
-            else
-            {
-                Message.Text = "You did not agree to the contest terms. Entry rejected";
+                    //display the collection
+                    //use a collection display control that displays
+                    //      multiple separate columns: GridView
+                    //requirements:
+                    // a) assign data source (DataSource)
+                    // b) bind the data to the control
+                    EntryList.DataSource = entries;
+                    EntryList.DataBind();
+                }
+                else
+                {
+                    Message.Text = "You did not agree to the contest terms. Entry rejected";
+                }
             }
         }
 
