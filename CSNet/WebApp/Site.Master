@@ -1,0 +1,91 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApp.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - My ASP.NET Application</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="navbar navbar-expand-md navbar-light" style="background-color: #c0c0c0;">
+           <a class="navbar-brand" runat="server" href="~/"><strong>CPSC1517-A03</strong></a>
+           <button class="navbar-toggler" type="button" data-toggle="collapse" 
+               data-target="#navbarSupportedContent" 
+               aria-controls="navbarSupportedContent" 
+               aria-expanded="false" 
+               aria-label="Toggle navigation" hidden>
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="navbarSupportedContent">
+              <asp:Menu ID="MainMenu" runat="server" Orientation="horizontal" 
+                  DataSourceID="sitemapmenuDS"
+                  CssClass="navbar-nav mr-auto" 
+                  StaticMenuStyle-CssClass="nav-item" 
+                  StaticSelectedStyle-CssClass="nav-item" 
+                  StaticSubMenuIndent="16px" 
+                  DynamicMenuStyle-CssClass="nav-item dropdown-menu" 
+                  RenderingMode="List" role="menu" 
+                  itemscope="itemscope" 
+                  itemtype="http://schema.org/SiteNavigationElement" >
+
+                    <LevelMenuItemStyles>
+                        <asp:MenuItemStyle CssClass="dropdown-item" 
+                            HorizontalPadding="15px" Height="50px" 
+                            VerticalPadding="15px" />
+                    </LevelMenuItemStyles>
+                    <LevelSelectedStyles>
+                        <asp:MenuItemStyle CssClass="nav-item active" 
+                            Font-Underline="False" />
+                    </LevelSelectedStyles>
+                    <StaticHoverStyle Font-Underline="true" />
+                    <StaticSelectedStyle Font-Bold="true"   />
+                    <DynamicMenuItemStyle CssClass="dropdown-item" />
+                </asp:Menu>
+                <asp:SiteMapDataSource ID="sitemapmenuDS" runat="server" 
+                    ShowStartingNode="false"/>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+    </form>
+</body>
+</html>
