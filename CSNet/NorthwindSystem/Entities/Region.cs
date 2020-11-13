@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NorthwindSystem.Entities
 {
-    class dummy
+    class Region
     {
     }
 }
