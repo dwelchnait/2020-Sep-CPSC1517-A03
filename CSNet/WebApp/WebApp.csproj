@@ -128,6 +128,7 @@
     <Content Include="Global.asax" />
     <Content Include="Images\EmployeeERD.png" />
     <Content Include="Images\Library Class Diagram.png" />
+    <Content Include="SamplePages\SimpleQuery.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -296,6 +297,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SamplePages\SimpleQuery.aspx.cs">
+      <DependentUpon>SimpleQuery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\SimpleQuery.aspx.designer.cs">
+      <DependentUpon>SimpleQuery.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SamplePages\TestPage.aspx.cs">
       <DependentUpon>TestPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
