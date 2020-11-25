@@ -8,6 +8,8 @@
                    description="a submenu item" />
       <siteMapNode url="~/SamplePages/SimpleQuery.aspx" title="Simple Query"
                    description="" />
+      <siteMapNode url="~/SamplePages/GridViewCodeBehind.aspx" title="Using GridView"
+                   description="" />
     </siteMapNode>
     <siteMapNode url="~/Contact.aspx" title="Contact"  description="" />
     <siteMapNode url="~/About.aspx" title="About"  description="" />

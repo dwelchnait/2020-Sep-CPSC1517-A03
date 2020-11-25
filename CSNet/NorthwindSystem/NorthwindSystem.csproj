@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\ProductController.cs" />
     <Compile Include="BLL\RegionController.cs" />
     <Compile Include="DAL\NorthwindSystemContext.cs" />
     <Compile Include="Entities\Product.cs" />
