@@ -120,5 +120,19 @@ namespace WebApp.SamplePages
                 MessageLabel.Text = GetInnerException(ex).Message;
             }
         }
+
+        protected void ProductList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            //you must manually alter the current PageIndex on the gridview
+            //the collection along with the PageSize will determine which
+            //   rows of your dataset (colletion) to display
+            //the required page (group of records) is indicated by the pageindex
+            //the selected (new) pageindex is available to you via the
+            //    GridViewPageEventArgs parameter e.NewPageIndex
+            ProductList.PageIndex = e.NewPageIndex;
+
+            //you MUST new refresh your data set (collection)
+            SearchProduct_Click(sender, new EventArgs());
+        }
     }
 }

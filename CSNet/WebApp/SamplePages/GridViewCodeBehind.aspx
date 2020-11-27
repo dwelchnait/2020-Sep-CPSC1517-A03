@@ -28,7 +28,8 @@
             <asp:GridView ID="ProductList" runat="server"
                 CssClass="table table-striped" GridLines="Horizontal"
                 BorderStyle="None" AutoGenerateColumns="False" 
-                OnSelectedIndexChanged="ProductList_SelectedIndexChanged">
+                OnSelectedIndexChanged="ProductList_SelectedIndexChanged" 
+                AllowPaging="True" PageSize="4" OnPageIndexChanging="ProductList_PageIndexChanging">
 
                 <Columns>
                     <asp:CommandField CausesValidation="False" SelectText="View" 
@@ -57,6 +58,9 @@
                         <ItemStyle HorizontalAlign="Right"></ItemStyle>
                     </asp:TemplateField>
                 </Columns>
+                <PagerSettings FirstPageText="Start" LastPageText="End" 
+                    Mode="NumericFirstLast" NextPageText="..." PageButtonCount="5" 
+                    PreviousPageText="..." />
             </asp:GridView>
         </div>
         <div class="col-md-5">
