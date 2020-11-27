@@ -19,20 +19,23 @@
             <asp:LinkButton ID="SearchProduct" runat="server" OnClick="SearchProduct_Click">
                 <i class="fa fa-search"></i>Search Product?</asp:LinkButton>
             &nbsp;&nbsp;
-            <asp:LinkButton ID="Clear" runat="server" OnClick="Clear_Click">
+            <asp:LinkButton ID="Clear" runat="server" OnClick="Clear_Click"
+                 CausesValidation="false">
                 <i class="fa fa-trash"></i>Clear</asp:LinkButton>
             <br />
             <asp:Label ID="MessageLabel" runat="server" ></asp:Label>
             <br />
             <asp:GridView ID="ProductList" runat="server"
                 CssClass="table table-striped" GridLines="Horizontal"
-                BorderStyle="None" AutoGenerateColumns="False" OnSelectedIndexChanged="ProductList_SelectedIndexChanged">
+                BorderStyle="None" AutoGenerateColumns="False" 
+                OnSelectedIndexChanged="ProductList_SelectedIndexChanged">
 
                 <Columns>
-                    <asp:CommandField CausesValidation="False" SelectText="View" ShowSelectButton="True" ButtonType="Button"></asp:CommandField>
+                    <asp:CommandField CausesValidation="False" SelectText="View" 
+                        ShowSelectButton="True" ButtonType="Button"></asp:CommandField>
                     <asp:TemplateField HeaderText="Name">
                         <ItemTemplate>
-                            <asp:HiddenField ID="HiddenField1" runat="server" 
+                            <asp:HiddenField ID="ProductID" runat="server" 
                                  Value='<%# Eval("ProductID") %>'/>
                             <asp:Label ID="Label2" runat="server" 
                                 Text='<%# Eval("ProductName") %>'></asp:Label>
