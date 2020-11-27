@@ -132,6 +132,7 @@
     <Content Include="Images\EmployeeERD.png" />
     <Content Include="Images\Library Class Diagram.png" />
     <Content Include="SamplePages\GridViewCodeBehind.aspx" />
+    <Content Include="SamplePages\SearchingUsingODS.aspx" />
     <Content Include="SamplePages\SimpleQuery.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -312,6 +313,13 @@
     </Compile>
     <Compile Include="SamplePages\GridViewCodeBehind.aspx.designer.cs">
       <DependentUpon>GridViewCodeBehind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SamplePages\SearchingUsingODS.aspx.cs">
+      <DependentUpon>SearchingUsingODS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\SearchingUsingODS.aspx.designer.cs">
+      <DependentUpon>SearchingUsingODS.aspx</DependentUpon>
     </Compile>
     <Compile Include="SamplePages\SimpleQuery.aspx.cs">
       <DependentUpon>SimpleQuery.aspx</DependentUpon>

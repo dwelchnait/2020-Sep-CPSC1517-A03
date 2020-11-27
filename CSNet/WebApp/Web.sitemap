@@ -10,6 +10,8 @@
                    description="" />
       <siteMapNode url="~/SamplePages/GridViewCodeBehind.aspx" title="Using GridView"
                    description="" />
+      <siteMapNode url="~/SamplePages/SearchingUsingODS.aspx" title="Using ODS for Search"
+                   description="" />
     </siteMapNode>
     <siteMapNode url="~/Contact.aspx" title="Contact"  description="" />
     <siteMapNode url="~/About.aspx" title="About"  description="" />
