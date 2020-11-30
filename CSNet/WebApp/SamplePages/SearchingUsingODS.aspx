@@ -20,7 +20,7 @@
         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />--%>
     </div>
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-9">
             <asp:Label ID="Label1" runat="server" Text="Enter a product name:"></asp:Label>
             &nbsp;&nbsp;
             <asp:TextBox ID="ProductArg" runat="server"></asp:TextBox>
@@ -52,6 +52,16 @@
                         </ItemTemplate>
                         <ItemStyle HorizontalAlign="Left"></ItemStyle>
                     </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Cat.">
+                        <ItemTemplate>
+                            <asp:DropDownList ID="CategoryList" runat="server" 
+                                DataSourceID="CategoryListODS" 
+                                DataTextField="CategoryName" 
+                                DataValueField="CategoryID"
+                                selectedvalue='<%# Eval("CategoryID") %>' >
+                            </asp:DropDownList>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="Price ($)">
                         <ItemTemplate>
                             <asp:Label ID="Label4" runat="server" 
@@ -67,12 +77,14 @@
                         <ItemStyle HorizontalAlign="Right"></ItemStyle>
                     </asp:TemplateField>
                 </Columns>
-              
+                <EmptyDataTemplate>
+                    No data to display
+                </EmptyDataTemplate>
                 <PagerSettings FirstPageText="Start" LastPageText="End" Mode="NumericFirstLast" NextPageText="..." PageButtonCount="5" PreviousPageText="..." />
               
             </asp:GridView>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-3">
             <table>
                 <tr>
                     <td align="right">
@@ -121,5 +133,11 @@
                 PropertyName="Text" DefaultValue="dfgdgff" 
                 Name="productname" Type="String"></asp:ControlParameter>
         </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CategoryListODS" runat="server" 
+        OldValuesParameterFormatString="original_{0}" 
+        SelectMethod="Category_ListAll" 
+        TypeName="NorthwindSystem.BLL.CategoryController">
+
     </asp:ObjectDataSource>
 </asp:Content>
