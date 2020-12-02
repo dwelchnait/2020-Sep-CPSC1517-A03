@@ -81,8 +81,8 @@ namespace WebApp.SamplePages
                 {
                     ProductID.Text = info.ProductID.ToString();
                     ProductName.Text = info.ProductName;
-                    CategoryList.SelectedValue = info.CategoryID.HasValue ? "0" : info.CategoryID.ToString();
-                    SupplierList.SelectedValue = info.SupplierID.HasValue ? "0" : info.SupplierID.ToString();
+                    CategoryList.SelectedValue = info.CategoryID.HasValue ? info.CategoryID.ToString() : "0";
+                    SupplierList.SelectedValue = info.SupplierID.HasValue ? info.SupplierID.ToString() : "0";
                     QuantityPerUnit.Text = string.IsNullOrEmpty(info.QuantityPerUnit) ? "" : info.QuantityPerUnit;
                     UnitPrice.Text = string.Format("{0:0.00}", info.UnitPrice);
                     if (info.UnitsInStock == null)
@@ -129,7 +129,73 @@ namespace WebApp.SamplePages
 
         protected void Add_Click(object sender, EventArgs e)
         {
-            MessageLabel.Text = "TODO: code add event";
+            if (Page.IsValid)
+            {
+                Product item = new Product();
+                item.ProductName = ProductName.Text;
+                if(CategoryList.SelectedValue == "0")
+                {
+                    item.CategoryID = null;
+                }
+                else
+                {
+                    item.CategoryID = int.Parse(CategoryList.SelectedValue);
+                }
+                if (SupplierList.SelectedValue == "0")
+                {
+                    item.SupplierID = null;
+                }
+                else
+                {
+                    item.SupplierID = int.Parse(SupplierList.SelectedValue);
+                }
+                item.QuantityPerUnit = string.IsNullOrEmpty(QuantityPerUnit.Text) ?
+                    null : QuantityPerUnit.Text;
+                if (string.IsNullOrEmpty(UnitPrice.Text))
+                {
+                    item.UnitPrice = null;
+                }
+                else
+                {
+                    item.UnitPrice = decimal.Parse(UnitPrice.Text);
+                }
+                if (string.IsNullOrEmpty(UnitsInStock.Text))
+                {
+                    item.UnitsInStock = null;
+                }
+                else
+                {
+                    item.UnitsInStock = Int16.Parse(UnitsInStock.Text);
+                }
+                if (string.IsNullOrEmpty(UnitsOnOrder.Text))
+                {
+                    item.UnitsOnOrder = null;
+                }
+                else
+                {
+                    item.UnitsOnOrder = Int16.Parse(UnitsOnOrder.Text);
+                }
+                if (string.IsNullOrEmpty(ReorderLevel.Text))
+                {
+                    item.ReorderLevel = null;
+                }
+                else
+                {
+                    item.ReorderLevel = Int16.Parse(ReorderLevel.Text);
+                }
+                item.Discontinued = false;
+                try
+                {
+                    ProductController sysmgr = new ProductController();
+                //    int newproductid = sysmgr.Product_Add(item);
+                //    ProductID.Text = newproductid.ToString();
+                    MessageLabel.Text = "Product has been added.";
+                }
+                catch(Exception ex)
+                {
+                    MessageLabel.Text = GetInnerException(ex).Message;
+                }
+            }
         }
 
         protected void Update_Click(object sender, EventArgs e)

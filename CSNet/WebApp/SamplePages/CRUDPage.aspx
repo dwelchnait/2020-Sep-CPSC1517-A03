@@ -148,8 +148,12 @@
                         <asp:Label ID="Label10" runat="server" Text="Supplier:"></asp:Label>
                     </td>
                     <td align="left">
-                        <asp:DropDownList ID="SupplierList" runat="server">
-
+                        <asp:DropDownList ID="SupplierList" runat="server" 
+                            DataSourceID="SupplierListODS" 
+                            DataTextField="CompanyName" 
+                            DataValueField="SupplierID"
+                             AppendDataBoundItems="true">
+                            <asp:ListItem Value="0">None</asp:ListItem>
                         </asp:DropDownList>
                     </td>
                 </tr>
@@ -229,7 +233,10 @@
         OldValuesParameterFormatString="original_{0}" 
         SelectMethod="Category_ListAll" 
         TypeName="NorthwindSystem.BLL.CategoryController">
-
     </asp:ObjectDataSource>
-
+    <asp:ObjectDataSource ID="SupplierListODS" runat="server" 
+        OldValuesParameterFormatString="original_{0}" 
+        SelectMethod="Supplier_ListAll" 
+        TypeName="NorthwindSystem.BLL.SupplierController">
+    </asp:ObjectDataSource>
 </asp:Content>

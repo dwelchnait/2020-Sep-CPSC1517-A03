@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NorthwindSystem.Entities
 {
-    [Table("Supliers")]
+    [Table("Suppliers")]
     public class Supplier
     {
         [Key]
