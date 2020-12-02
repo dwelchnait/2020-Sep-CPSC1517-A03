@@ -81,8 +81,8 @@ namespace WebApp.SamplePages
                 {
                     ProductID.Text = info.ProductID.ToString();
                     ProductName.Text = info.ProductName;
-                    CategoryList.SelectedIndex = info.CategoryID.HasValue ? 0 : (int)info.CategoryID;
-                    SupplierList.SelectedIndex = info.SupplierID.HasValue ? 0 : (int)info.SupplierID;
+                    CategoryList.SelectedValue = info.CategoryID.HasValue ? "0" : info.CategoryID.ToString();
+                    SupplierList.SelectedValue = info.SupplierID.HasValue ? "0" : info.SupplierID.ToString();
                     QuantityPerUnit.Text = string.IsNullOrEmpty(info.QuantityPerUnit) ? "" : info.QuantityPerUnit;
                     UnitPrice.Text = string.Format("{0:0.00}", info.UnitPrice);
                     if (info.UnitsInStock == null)
