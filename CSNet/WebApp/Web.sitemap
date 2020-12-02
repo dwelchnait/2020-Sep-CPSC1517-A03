@@ -12,6 +12,8 @@
                    description="" />
       <siteMapNode url="~/SamplePages/SearchingUsingODS.aspx" title="Using ODS for Search"
                    description="" />
+      <siteMapNode url="~/SamplePages/CRUDPage.aspx" title="CRUD Page"
+                   description="" />
     </siteMapNode>
     <siteMapNode url="~/Contact.aspx" title="Contact"  description="" />
     <siteMapNode url="~/About.aspx" title="About"  description="" />

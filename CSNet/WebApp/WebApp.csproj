@@ -131,6 +131,7 @@
     <Content Include="Global.asax" />
     <Content Include="Images\EmployeeERD.png" />
     <Content Include="Images\Library Class Diagram.png" />
+    <Content Include="SamplePages\CRUDPage.aspx" />
     <Content Include="SamplePages\GridViewCodeBehind.aspx" />
     <Content Include="SamplePages\SearchingUsingODS.aspx" />
     <Content Include="SamplePages\SimpleQuery.aspx" />
@@ -307,6 +308,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SamplePages\CRUDPage.aspx.cs">
+      <DependentUpon>CRUDPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\CRUDPage.aspx.designer.cs">
+      <DependentUpon>CRUDPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SamplePages\GridViewCodeBehind.aspx.cs">
       <DependentUpon>GridViewCodeBehind.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

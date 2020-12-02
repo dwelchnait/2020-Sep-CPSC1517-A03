@@ -1,6 +1,6 @@
-﻿<%@ Page Title="ODS Search" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SearchingUsingODS.aspx.cs" Inherits="WebApp.SamplePages.SearchingUsingODS" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CRUDPage.aspx.cs" Inherits="WebApp.SamplePages.CRUDPage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="row">
+     <div class="row">
         <div class="jumbotron">
             <h1>Filter Search using GridView</h1>
             <blockquote class="col-md-12 alert alert-info">
@@ -11,13 +11,38 @@
         </div>
     </div>
     <div class="row">
-       <%-- <asp:RequiredFieldValidator ID="RequiredProductArg" runat="server" 
-            ErrorMessage="Enter a product name (or portion of)"
+        <asp:RequiredFieldValidator ID="RequiredProductName" runat="server" 
+            ErrorMessage="Product Name is required"
             Display="None" SetFocusOnError="true" ForeColor="Firebrick"
-             ControlToValidate="ProductArg">
-
+             ControlToValidate="ProductName">
         </asp:RequiredFieldValidator>
-        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />--%>
+
+        <asp:CompareValidator ID="CompareUnitPrice" runat="server" 
+            ErrorMessage="Dollar price must be greater or equal to 0.00"
+             Display="None" SetFocusOnError="true" ForeColor="Firebrick"
+             ControlToValidate="UnitPrice" Type="Double" Operator="GreaterThanEqual"
+             ValueToCompare="0.00">
+        </asp:CompareValidator>
+         <asp:CompareValidator ID="CompareUnitsInStock" runat="server" 
+            ErrorMessage="Quanity on Hand must be greater or equal to 0"
+             Display="None" SetFocusOnError="true" ForeColor="Firebrick"
+             ControlToValidate="UnitsInStock" Type="Integer" Operator="GreaterThanEqual"
+             ValueToCompare="0">
+        </asp:CompareValidator>
+        <asp:RangeValidator ID="RangeUnitsOnOrder" runat="server" 
+             ErrorMessage="Quanity on Order must be greater or equal to 0"
+             Display="None" SetFocusOnError="true" ForeColor="Firebrick"
+              ControlToValidate="UnitsOnOrder" Type="Integer" MinimumValue="0"
+             MaximumValue="32767">
+        </asp:RangeValidator>
+          <asp:CompareValidator ID="CompareReorderLevel" runat="server" 
+            ErrorMessage="Reorder level must be greater or equal to 0"
+             Display="None" SetFocusOnError="true" ForeColor="Firebrick"
+             ControlToValidate="ReorderLevel" Type="Integer" Operator="GreaterThanEqual"
+             ValueToCompare="0">
+        </asp:CompareValidator>
+
+        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
     </div>
     <div class="row">
         <div class="col-md-7">
@@ -25,7 +50,8 @@
             &nbsp;&nbsp;
             <asp:TextBox ID="ProductArg" runat="server"></asp:TextBox>
             &nbsp;&nbsp;
-            <asp:LinkButton ID="SearchProduct" runat="server" OnClick="SearchProduct_Click" >
+            <asp:LinkButton ID="SearchProduct" runat="server" OnClick="SearchProduct_Click"
+                 CausesValidation="false">
                 <i class="fa fa-search"></i>Search Product?</asp:LinkButton>
             &nbsp;&nbsp;
             <asp:LinkButton ID="Clear" runat="server" OnClick="Clear_Click"
@@ -54,7 +80,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Cat.">
                         <ItemTemplate>
-                            <asp:DropDownList ID="CategoryList" runat="server" 
+                            <asp:DropDownList ID="CategoryGVList" runat="server" 
                                 DataSourceID="CategoryListODS" 
                                 DataTextField="CategoryName" 
                                 DataValueField="CategoryID"
@@ -99,7 +125,35 @@
                         <asp:Label ID="Label5" runat="server" Text="Name:"></asp:Label>
                     </td>
                     <td align="left">
-                        <asp:Label ID="ProductName" runat="server" ></asp:Label>
+                        <asp:TextBox ID="ProductName" runat="server" ></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <asp:Label ID="Label8" runat="server" Text="Category:"></asp:Label>
+                    </td>
+                    <td align="left">
+                        <asp:DropDownList ID="CategoryList" runat="server">
+
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                 <tr>
+                    <td align="right">
+                        <asp:Label ID="Label10" runat="server" Text="Supplier:"></asp:Label>
+                    </td>
+                    <td align="left">
+                        <asp:DropDownList ID="SupplierList" runat="server">
+
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                 <tr>
+                    <td align="right">
+                        <asp:Label ID="Label11" runat="server" Text="Qty/Unit:"></asp:Label>
+                    </td>
+                    <td align="left">
+                        <asp:TextBox ID="QuantityPerUnit" runat="server" ></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -107,7 +161,31 @@
                         <asp:Label ID="Label7" runat="server" Text="Price ($):"></asp:Label>
                     </td>
                     <td align="left">
-                        <asp:Label ID="UnitPrice" runat="server" ></asp:Label>
+                        <asp:TextBox ID="UnitPrice" runat="server" ></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <asp:Label ID="Label12" runat="server" Text="QoH:"></asp:Label>
+                    </td>
+                    <td align="left">
+                        <asp:TextBox ID="UnitsInStock" runat="server" ></asp:TextBox>
+                    </td>
+                </tr>
+                               <tr>
+                    <td align="right">
+                        <asp:Label ID="Label13" runat="server" Text="QoO:"></asp:Label>
+                    </td>
+                    <td align="left">
+                        <asp:TextBox ID="UnitsOnOrder" runat="server" ></asp:TextBox>
+                    </td>
+                </tr>
+                               <tr>
+                    <td align="right">
+                        <asp:Label ID="Label14" runat="server" Text="ROL:"></asp:Label>
+                    </td>
+                    <td align="left">
+                        <asp:TextBox ID="ReorderLevel" runat="server" ></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -117,6 +195,14 @@
                     <td align="left">
                         <asp:CheckBox ID="Discontinued" runat="server"
                             Text="&nbsp;(discontinued if checked)"></asp:CheckBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <asp:Button ID="Add" runat="server" Text="Add" height="33px" width="74px" OnClick="Add_Click" />&nbsp;&nbsp;
+                        <asp:Button ID="Update" runat="server" Text="Update" height="33px" width="74px" OnClick="Update_Click"/>&nbsp;&nbsp;
+                        <asp:Button ID="Disc" runat="server" Text="Disc." height="33px" width="74px" 
+                             CausesValidation="false" OnClick="Disc_Click"/>
                     </td>
                 </tr>
             </table>
