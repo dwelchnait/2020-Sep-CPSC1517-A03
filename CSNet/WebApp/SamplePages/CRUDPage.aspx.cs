@@ -33,8 +33,14 @@ namespace WebApp.SamplePages
             ProductArg.Text = "";
             ProductID.Text = "";
             ProductName.Text = "";
+            QuantityPerUnit.Text = "";
             UnitPrice.Text = "";
+            UnitsInStock.Text = "";
+            UnitsOnOrder.Text = "";
+            ReorderLevel.Text = "";
             Discontinued.Checked = false;
+            CategoryList.SelectedIndex = 0;
+            SupplierList.SelectedIndex = 0;
             //emptying a gridview
             ProductList.DataSource = null;
             ProductList.DataBind();
@@ -75,7 +81,35 @@ namespace WebApp.SamplePages
                 {
                     ProductID.Text = info.ProductID.ToString();
                     ProductName.Text = info.ProductName;
+                    CategoryList.SelectedIndex = info.CategoryID.HasValue ? 0 : (int)info.CategoryID;
+                    SupplierList.SelectedIndex = info.SupplierID.HasValue ? 0 : (int)info.SupplierID;
+                    QuantityPerUnit.Text = string.IsNullOrEmpty(info.QuantityPerUnit) ? "" : info.QuantityPerUnit;
                     UnitPrice.Text = string.Format("{0:0.00}", info.UnitPrice);
+                    if (info.UnitsInStock == null)
+                    {
+                        UnitsInStock.Text = "0";
+                    }
+                    else
+                    {
+                        UnitsInStock.Text = info.UnitsInStock.ToString();
+                    }
+                    if (info.UnitsOnOrder == null)
+                    {
+                        UnitsOnOrder.Text = "0";
+                    }
+                    else
+                    {
+                        UnitsOnOrder.Text = info.UnitsOnOrder.ToString();
+                    }
+                    if (info.ReorderLevel == null)
+                    {
+                        ReorderLevel.Text = "0";
+                    }
+                    else
+                    {
+                        ReorderLevel.Text = info.ReorderLevel.ToString();
+                    }
+                    
                     Discontinued.Checked = info.Discontinued;
                 }
             }
