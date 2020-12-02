@@ -133,8 +133,13 @@
                         <asp:Label ID="Label8" runat="server" Text="Category:"></asp:Label>
                     </td>
                     <td align="left">
-                        <asp:DropDownList ID="CategoryList" runat="server">
+                        <asp:DropDownList ID="CategoryList" runat="server" 
+                            DataSourceID="CategoryListODS" 
+                            DataTextField="CategoryName" 
+                            DataValueField="CategoryID"
+                             AppendDataBoundItems="true">
 
+                            <asp:ListItem Value="0">None</asp:ListItem>
                         </asp:DropDownList>
                     </td>
                 </tr>
