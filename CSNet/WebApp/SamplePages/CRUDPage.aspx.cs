@@ -187,8 +187,8 @@ namespace WebApp.SamplePages
                 try
                 {
                     ProductController sysmgr = new ProductController();
-                //    int newproductid = sysmgr.Product_Add(item);
-                //    ProductID.Text = newproductid.ToString();
+                    int newproductid = sysmgr.Product_Add(item);
+                    ProductID.Text = newproductid.ToString();
                     MessageLabel.Text = "Product has been added.";
                 }
                 catch(Exception ex)
