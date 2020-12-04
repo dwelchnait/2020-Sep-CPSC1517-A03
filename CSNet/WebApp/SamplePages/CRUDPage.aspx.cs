@@ -131,58 +131,7 @@ namespace WebApp.SamplePages
         {
             if (Page.IsValid)
             {
-                Product item = new Product();
-                item.ProductName = ProductName.Text;
-                if(CategoryList.SelectedValue == "0")
-                {
-                    item.CategoryID = null;
-                }
-                else
-                {
-                    item.CategoryID = int.Parse(CategoryList.SelectedValue);
-                }
-                if (SupplierList.SelectedValue == "0")
-                {
-                    item.SupplierID = null;
-                }
-                else
-                {
-                    item.SupplierID = int.Parse(SupplierList.SelectedValue);
-                }
-                item.QuantityPerUnit = string.IsNullOrEmpty(QuantityPerUnit.Text) ?
-                    null : QuantityPerUnit.Text;
-                if (string.IsNullOrEmpty(UnitPrice.Text))
-                {
-                    item.UnitPrice = null;
-                }
-                else
-                {
-                    item.UnitPrice = decimal.Parse(UnitPrice.Text);
-                }
-                if (string.IsNullOrEmpty(UnitsInStock.Text))
-                {
-                    item.UnitsInStock = null;
-                }
-                else
-                {
-                    item.UnitsInStock = Int16.Parse(UnitsInStock.Text);
-                }
-                if (string.IsNullOrEmpty(UnitsOnOrder.Text))
-                {
-                    item.UnitsOnOrder = null;
-                }
-                else
-                {
-                    item.UnitsOnOrder = Int16.Parse(UnitsOnOrder.Text);
-                }
-                if (string.IsNullOrEmpty(ReorderLevel.Text))
-                {
-                    item.ReorderLevel = null;
-                }
-                else
-                {
-                    item.ReorderLevel = Int16.Parse(ReorderLevel.Text);
-                }
+                Product item = GetFormData();
                 item.Discontinued = false;
                 try
                 {
@@ -200,12 +149,141 @@ namespace WebApp.SamplePages
 
         protected void Update_Click(object sender, EventArgs e)
         {
-            MessageLabel.Text = "TODO: code update event";
+            if (Page.IsValid)
+            {
+                if (string.IsNullOrEmpty(ProductID.Text))
+                {
+                    MessageLabel.Text = "Select a product to maintain from the search list.";
+                }
+                else
+                {
+                    Product item = GetFormData();
+                    item.ProductID = int.Parse(ProductID.Text);
+                    item.Discontinued = Discontinued.Checked;
+                    try
+                    {
+                        ProductController sysmgr = new ProductController();
+                        int rowsaffected = sysmgr.Product_Update(item);
+                        //test the results of your update
+                        if (rowsaffected > 0)
+                        {
+                            MessageLabel.Text = "Product has been updated.";
+                        }
+                        else
+                        {
+                            MessageLabel.Text = "Product is no longer on file. Refresh your search.";
+                            //clear the primary key
+                            ProductID.Text = "";
+                        }
+                        //consider if any of your search display could have been altered
+                        //because we have on ODS against the search, you could simply DataBind() your
+                        //    control to refresh it
+                        ProductList.DataBind();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageLabel.Text = GetInnerException(ex).Message;
+                    }
+                }
+            }
         }
 
         protected void Disc_Click(object sender, EventArgs e)
         {
-            MessageLabel.Text = "TODO: code discontinued event";
+
+                if (string.IsNullOrEmpty(ProductID.Text))
+                {
+                    MessageLabel.Text = "Select a product to maintain from the search list.";
+                }
+                else
+                {
+                   
+                    try
+                    {
+                        ProductController sysmgr = new ProductController();
+                        int rowsaffected = sysmgr.Product_Delete(int.Parse(ProductID.Text));
+                        //test the results of your update
+                        if (rowsaffected > 0)
+                        {
+                            MessageLabel.Text = "Product has been discontinued.";
+                            Discontinued.Checked = true;
+                        }
+                        else
+                        {
+                            MessageLabel.Text = "Product is no longer on file. Refresh your search.";
+                            //clear the primary key
+                            ProductID.Text = "";
+                        }
+                        //consider if any of your search display could have been altered
+                        //because we have on ODS against the search, you could simply DataBind() your
+                        //    control to refresh it
+                        ProductList.DataBind();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageLabel.Text = GetInnerException(ex).Message;
+                    }
+                }
+            
+        }
+
+        protected Product GetFormData()
+        {
+            Product item = new Product();
+            item.ProductName = ProductName.Text;
+            if (CategoryList.SelectedValue == "0")
+            {
+                item.CategoryID = null;
+            }
+            else
+            {
+                item.CategoryID = int.Parse(CategoryList.SelectedValue);
+            }
+            if (SupplierList.SelectedValue == "0")
+            {
+                item.SupplierID = null;
+            }
+            else
+            {
+                item.SupplierID = int.Parse(SupplierList.SelectedValue);
+            }
+            item.QuantityPerUnit = string.IsNullOrEmpty(QuantityPerUnit.Text) ?
+                null : QuantityPerUnit.Text;
+            if (string.IsNullOrEmpty(UnitPrice.Text))
+            {
+                item.UnitPrice = null;
+            }
+            else
+            {
+                item.UnitPrice = decimal.Parse(UnitPrice.Text);
+            }
+            if (string.IsNullOrEmpty(UnitsInStock.Text))
+            {
+                item.UnitsInStock = null;
+            }
+            else
+            {
+                item.UnitsInStock = Int16.Parse(UnitsInStock.Text);
+            }
+            if (string.IsNullOrEmpty(UnitsOnOrder.Text))
+            {
+                item.UnitsOnOrder = null;
+            }
+            else
+            {
+                item.UnitsOnOrder = Int16.Parse(UnitsOnOrder.Text);
+            }
+            if (string.IsNullOrEmpty(ReorderLevel.Text))
+            {
+                item.ReorderLevel = null;
+            }
+            else
+            {
+                item.ReorderLevel = Int16.Parse(ReorderLevel.Text);
+            }
+            return item;
         }
     }
 }
