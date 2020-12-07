@@ -14,6 +14,8 @@
                    description="" />
       <siteMapNode url="~/SamplePages/CRUDPage.aspx" title="CRUD Page"
                    description="" />
+      <siteMapNode url="~/SamplePages/UsingViewsPage.aspx" title="Using Sql View in Application"
+                   description="" />
     </siteMapNode>
     <siteMapNode url="~/Contact.aspx" title="Contact"  description="" />
     <siteMapNode url="~/About.aspx" title="About"  description="" />

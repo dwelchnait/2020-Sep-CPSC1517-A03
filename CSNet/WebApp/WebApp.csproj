@@ -135,6 +135,7 @@
     <Content Include="SamplePages\GridViewCodeBehind.aspx" />
     <Content Include="SamplePages\SearchingUsingODS.aspx" />
     <Content Include="SamplePages\SimpleQuery.aspx" />
+    <Content Include="SamplePages\UsingViewsPage.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -342,6 +343,13 @@
     </Compile>
     <Compile Include="SamplePages\TestPage.aspx.designer.cs">
       <DependentUpon>TestPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SamplePages\UsingViewsPage.aspx.cs">
+      <DependentUpon>UsingViewsPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\UsingViewsPage.aspx.designer.cs">
+      <DependentUpon>UsingViewsPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
